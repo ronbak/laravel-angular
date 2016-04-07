@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelAngular;
+namespace LaravelAngular\Entities;
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
