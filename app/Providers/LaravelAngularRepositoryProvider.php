@@ -27,5 +27,9 @@ class LaravelAngularRepositoryProvider extends ServiceProvider
             \LaravelAngular\Repositories\ClientRepository::class,
             \LaravelAngular\Repositories\ClientRepositoryEloquent::class
         );
+        $this->app->bind(
+            \LaravelAngular\Repositories\ProjectRepository::class,
+            \LaravelAngular\Repositories\ProjectRepositoryEloquent::class
+        );
     }
 }

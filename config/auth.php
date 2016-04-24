@@ -28,7 +28,7 @@ return [
     |
     */
 
-    'model' => LaravelAngular\User::class,
+    'model' => LaravelAngular\Entities\User::class,
 
     /*
     |--------------------------------------------------------------------------

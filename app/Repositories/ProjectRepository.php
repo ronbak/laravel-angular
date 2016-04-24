@@ -4,7 +4,7 @@ namespace LaravelAngular\Repositories;
 
 use Prettus\Repository\Contracts\RepositoryInterface;
 
-interface ClientRepository extends RepositoryInterface
+interface ProjectRepository extends RepositoryInterface
 {
     //
 }

@@ -30,3 +30,17 @@ $factory->define(LaravelAngular\Entities\Client::class, function (Faker\Generato
         'obs' => $faker->sentence,
     ];
 });
+
+$factory->define(LaravelAngular\Entities\Project::class, function (Faker\Generator $faker) {
+    return [
+        //'owner_id' => $faker->randomElement(\LaravelAngular\Entities\User::all('id')),
+        //'client_id' => $faker->randomElement(\LaravelAngular\Entities\Client::all('id')),
+        'owner_id' => $faker->numberBetween(1,2),
+        'client_id' => $faker->numberBetween(1,5),
+        'name' => $faker->name,
+        'description' => $faker->text(),
+        'progress' => $faker->numberBetween(0,100),
+        'status' => $faker->numberBetween(0,1),
+        'due_date' => $faker->dateTime,
+    ];
+});

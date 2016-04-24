@@ -7,29 +7,28 @@
  */
 
 namespace LaravelAngular\Services;
-use LaravelAngular\Repositories\ClientRepository;
-use LaravelAngular\Validators\ClientValidator;
+use LaravelAngular\Repositories\ProjectRepository;
+use LaravelAngular\Validators\ProjectValidator;
 use Prettus\Validator\Exceptions\ValidatorException;
 
-class ClientService
+class ProjectService
 {
     /**
-     * @var ClientValidator
+     * @var ProjectValidator
      */
     protected $validator;
 
     /**
-     * @var ClientRepository
+     * @var ProjectRepository
      */
     protected $repository;
 
-    public function __construct(ClientRepository $repository, ClientValidator $validator){
+    public function __construct(ProjectRepository $repository, ProjectValidator $validator){
         $this->repository = $repository;
         $this->validator = $validator;
     }
 
     public function create(array $data){
-        // Enviar email e etc
         try{
             $this->validator->with($data)->passesOrFail();
             return $this->repository->create($data);

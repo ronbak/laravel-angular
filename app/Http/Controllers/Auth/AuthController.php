@@ -2,7 +2,7 @@
 
 namespace LaravelAngular\Http\Controllers\Auth;
 
-use LaravelAngular\User;
+use LaravelAngular\Entities\User;
 use Validator;
 use LaravelAngular\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
