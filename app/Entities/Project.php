@@ -15,4 +15,14 @@ class Project extends Model
         'owner_id',
         'client_id',
     ];
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
 }

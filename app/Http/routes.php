@@ -24,8 +24,8 @@ Route::group(['prefix' => 'client'], function(){
 });
 //Project Routes
 Route::group(['prefix' => 'project'], function(){
-    Route::get('', ['as' => 'project_index', 'uses' => 'ProjectController@index']);
-    Route::post('', ['as' => 'project_store', 'uses' => 'ProjectController@store']);
+    Route::get('/', ['as' => 'project_index', 'uses' => 'ProjectController@index']);
+    Route::post('/', ['as' => 'project_store', 'uses' => 'ProjectController@store']);
     Route::get('/{id}', ['as' => 'project_show', 'uses' => 'ProjectController@show']);
     Route::delete('/{id}', ['as' => 'project_destroy', 'uses' => 'ProjectController@destroy']);
     Route::put('/{id}', ['as' => 'project_update', 'uses' => 'ProjectController@update']);

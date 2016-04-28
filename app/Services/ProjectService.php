@@ -7,6 +7,7 @@
  */
 
 namespace LaravelAngular\Services;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use LaravelAngular\Repositories\ProjectRepository;
 use LaravelAngular\Validators\ProjectValidator;
 use Prettus\Validator\Exceptions\ValidatorException;
@@ -44,10 +45,10 @@ class ProjectService
         try{
             $this->validator->with($data)->passesOrFail();
             return $this->repository->update($data, $id);
-        } catch(ValidatorException $e){
+        } catch(ModelNotFoundException $e){
             return[
                 'error' => true,
-                'message' => $e->getMessageBag()
+                'message' => $e->getMessage()
             ];
         }
     }
