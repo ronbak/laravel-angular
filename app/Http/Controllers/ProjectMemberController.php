@@ -4,22 +4,22 @@ namespace LaravelAngular\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use LaravelAngular\Repositories\ProjectRepository;
-use LaravelAngular\Services\ProjectService;
+use LaravelAngular\Repositories\ProjectMemberRepository;
+use LaravelAngular\Services\ProjectMemberService;
 
-class ProjectController extends Controller
+class ProjectMemberController extends Controller
 {
     /**
-     * @var ProjectRepository
+     * @var ProjectMemberRepository
      */
     private $repository;
 
     /**
-     * @var ProjectService
+     * @var ProjectMemberService
      */
     private $service;
 
-    public function __construct(ProjectRepository $repository, ProjectService $service){
+    public function __construct(ProjectMemberRepository $repository, ProjectMemberService $service){
         $this->repository = $repository;
         $this->service = $service;
     }
@@ -28,10 +28,10 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
         //return $this->repository->all();
-        return $this->repository->with(['owner', 'client', 'notes', 'tasks', 'members'])->all();
+        return $this->repository->findWhere(['project_id' => $id]);
     }
 
     /**
@@ -51,10 +51,10 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, $MemberId)
     {
         //return $this->service->find($id);
-        return $this->repository->with(['owner', 'client', 'notes', 'tasks', 'members'])->find($id);
+        return $this->repository->findWhere(['project_id' => $id, 'id' => $MemberId]);
     }
 
     /**
@@ -75,9 +75,9 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, $MemberId)
     {
-        return $this->service->update($request->all(), $id);
+        return $this->service->update($request->all(), $MemberId);
     }
 
     /**
@@ -86,9 +86,8 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, $MemberId)
     {
-        return $this->service->delete($id);
+        return $this->service->delete($MemberId);
     }
-
 }

@@ -8,23 +8,23 @@
 
 namespace LaravelAngular\Services;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use LaravelAngular\Repositories\ProjectRepository;
-use LaravelAngular\Validators\ProjectValidator;
+use LaravelAngular\Repositories\ProjectMemberRepository;
+use LaravelAngular\Validators\ProjectMemberValidator;
 use Prettus\Validator\Exceptions\ValidatorException;
 
-class ProjectService
+class ProjectMemberService
 {
     /**
-     * @var ProjectValidator
+     * @var ProjectMemberValidator
      */
     protected $validator;
 
     /**
-     * @var ProjectRepository
+     * @var ProjectMemberRepository
      */
     protected $repository;
 
-    public function __construct(ProjectRepository $repository, ProjectValidator $validator){
+    public function __construct(ProjectMemberRepository $repository, ProjectMemberValidator $validator){
         $this->repository = $repository;
         $this->validator = $validator;
     }
@@ -82,9 +82,5 @@ class ProjectService
                 'message' => $e->getMessage()
             ];
         }
-    }
-
-    public function addMember(){
-
     }
 }

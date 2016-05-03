@@ -41,3 +41,21 @@ Route::group(['prefix' => 'project/{id}/note'], function(){
     Route::delete('/{noteId}', ['as' => 'project_note_destroy', 'uses' => 'ProjectNoteController@destroy']);
     Route::put('/{noteId}', ['as' => 'project_note_update', 'uses' => 'ProjectNoteController@update']);
 });
+
+//ProjectTasks Routes
+Route::group(['prefix' => 'project/{id}/task'], function(){
+    Route::get('/', ['as' => 'project_task_index', 'uses' => 'ProjectTaskController@index']);
+    Route::post('/', ['as' => 'project_task_store', 'uses' => 'ProjectTaskController@store']);
+    Route::get('/{taskId}', ['as' => 'project_task_show', 'uses' => 'ProjectTaskController@show']);
+    Route::delete('/{taskId}', ['as' => 'project_task_destroy', 'uses' => 'ProjectTaskController@destroy']);
+    Route::put('/{taskId}', ['as' => 'project_task_update', 'uses' => 'ProjectTaskController@update']);
+});
+
+//ProjectMember Routes
+Route::group(['prefix' => 'project/{id}/member'], function(){
+    Route::get('/', ['as' => 'project_member_index', 'uses' => 'ProjectMemberController@index']);
+    //Route::post('/', ['as' => 'project_member_store', 'uses' => 'ProjectMemberController@store']);
+    //Route::get('/{memberId}', ['as' => 'project_member_show', 'uses' => 'ProjectMemberController@show']);
+    //Route::delete('/{memberId}', ['as' => 'project_member_destroy', 'uses' => 'ProjectMemberController@destroy']);
+    //Route::put('/{memberId}', ['as' => 'project_member_update', 'uses' => 'ProjectMemberController@update']);
+});

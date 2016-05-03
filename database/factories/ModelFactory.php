@@ -50,3 +50,20 @@ $factory->define(LaravelAngular\Entities\ProjectNote::class, function (Faker\Gen
         'note' => $faker->paragraph,
     ];
 });
+
+$factory->define(LaravelAngular\Entities\ProjectTask::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->word,
+        'project_id' => rand(1,10),
+        'status' => rand(1,3),
+        'start_date' => $faker->dateTime('now'),
+        'due_date' => $faker->dateTime('now'),
+    ];
+});
+
+$factory->define(LaravelAngular\Entities\ProjectMember::class, function (Faker\Generator $faker) {
+    return [
+        'project_id' => rand(1,10),
+        'user_id' => rand(1,2),
+    ];
+});
