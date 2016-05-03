@@ -14,6 +14,7 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
 //Client Routes
 Route::group(['prefix' => 'client'], function(){
     Route::get('/', ['as' => 'client_index', 'uses' => 'ClientController@index']);
@@ -22,6 +23,7 @@ Route::group(['prefix' => 'client'], function(){
     Route::delete('/{id}', ['as' => 'client_destroy', 'uses' => 'ClientController@destroy']);
     Route::put('/{id}', ['as' => 'client_update', 'uses' => 'ClientController@update']);
 });
+
 //Project Routes
 Route::group(['prefix' => 'project'], function(){
     Route::get('/', ['as' => 'project_index', 'uses' => 'ProjectController@index']);
@@ -29,4 +31,13 @@ Route::group(['prefix' => 'project'], function(){
     Route::get('/{id}', ['as' => 'project_show', 'uses' => 'ProjectController@show']);
     Route::delete('/{id}', ['as' => 'project_destroy', 'uses' => 'ProjectController@destroy']);
     Route::put('/{id}', ['as' => 'project_update', 'uses' => 'ProjectController@update']);
+});
+
+//ProjectNote Routes
+Route::group(['prefix' => 'project/{id}/note'], function(){
+    Route::get('/', ['as' => 'project_note_index', 'uses' => 'ProjectNoteController@index']);
+    Route::post('/', ['as' => 'project_note_store', 'uses' => 'ProjectNoteController@store']);
+    Route::get('/{noteId}', ['as' => 'project_note_show', 'uses' => 'ProjectNoteController@show']);
+    Route::delete('/{noteId}', ['as' => 'project_note_destroy', 'uses' => 'ProjectNoteController@destroy']);
+    Route::put('/{noteId}', ['as' => 'project_note_update', 'uses' => 'ProjectNoteController@update']);
 });

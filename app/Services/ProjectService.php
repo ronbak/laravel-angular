@@ -50,6 +50,11 @@ class ProjectService
                 'error' => true,
                 'message' => $e->getMessage()
             ];
+        } catch(ValidatorException $e){
+            return[
+                'error' => true,
+                'message' => $e->getMessageBag()
+            ];
         }
     }
 

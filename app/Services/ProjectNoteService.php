@@ -8,29 +8,28 @@
 
 namespace LaravelAngular\Services;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use LaravelAngular\Repositories\ClientRepository;
-use LaravelAngular\Validators\ClientValidator;
+use LaravelAngular\Repositories\ProjectNoteRepository;
+use LaravelAngular\Validators\ProjectNoteValidator;
 use Prettus\Validator\Exceptions\ValidatorException;
 
-class ClientService
+class ProjectNoteService
 {
     /**
-     * @var ClientValidator
+     * @var ProjectNoteValidator
      */
     protected $validator;
 
     /**
-     * @var ClientRepository
+     * @var ProjectNoteRepository
      */
     protected $repository;
 
-    public function __construct(ClientRepository $repository, ClientValidator $validator){
+    public function __construct(ProjectNoteRepository $repository, ProjectNoteValidator $validator){
         $this->repository = $repository;
         $this->validator = $validator;
     }
 
     public function create(array $data){
-        // Enviar email e etc
         try{
             $this->validator->with($data)->passesOrFail();
             return $this->repository->create($data);

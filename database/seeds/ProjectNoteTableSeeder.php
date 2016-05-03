@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class UserTableSeeder extends Seeder
+class ProjectNoteTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,6 +11,6 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(\LaravelAngular\Entities\User::class, 2)->create();
+        factory(\LaravelAngular\Entities\ProjectNote::class, 50)->create();
     }
 }
