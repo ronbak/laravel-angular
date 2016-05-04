@@ -54,8 +54,7 @@ Route::group(['prefix' => 'project/{id}/task'], function(){
 //ProjectMember Routes
 Route::group(['prefix' => 'project/{id}/member'], function(){
     Route::get('/', ['as' => 'project_member_index', 'uses' => 'ProjectMemberController@index']);
-    //Route::post('/', ['as' => 'project_member_store', 'uses' => 'ProjectMemberController@store']);
-    //Route::get('/{memberId}', ['as' => 'project_member_show', 'uses' => 'ProjectMemberController@show']);
-    //Route::delete('/{memberId}', ['as' => 'project_member_destroy', 'uses' => 'ProjectMemberController@destroy']);
-    //Route::put('/{memberId}', ['as' => 'project_member_update', 'uses' => 'ProjectMemberController@update']);
+    Route::post('/', ['as' => 'project_member_store', 'uses' => 'ProjectMemberController@addMember']);
+    Route::get('/{memberId}', ['as' => 'project_member_show', 'uses' => 'ProjectMemberController@isMember']);
+    Route::delete('/{memberId}', ['as' => 'project_member_destroy', 'uses' => 'ProjectMemberController@removeMember']);
 });

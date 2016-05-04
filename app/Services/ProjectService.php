@@ -8,7 +8,9 @@
 
 namespace LaravelAngular\Services;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use LaravelAngular\Repositories\ProjectMemberRepository;
 use LaravelAngular\Repositories\ProjectRepository;
+use LaravelAngular\Validators\ProjectMemberValidator;
 use LaravelAngular\Validators\ProjectValidator;
 use Prettus\Validator\Exceptions\ValidatorException;
 
@@ -84,7 +86,4 @@ class ProjectService
         }
     }
 
-    public function addMember(){
-
-    }
 }

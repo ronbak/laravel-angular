@@ -7,7 +7,7 @@
  */
 
 namespace LaravelAngular\Services;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 use LaravelAngular\Repositories\ProjectMemberRepository;
 use LaravelAngular\Validators\ProjectMemberValidator;
 use Prettus\Validator\Exceptions\ValidatorException;
@@ -38,29 +38,18 @@ class ProjectMemberService
                 'error' => true,
                 'message' => $e->getMessageBag()
             ];
-        }
-    }
-
-    public function update(array $data, $id){
-        try{
-            $this->validator->with($data)->passesOrFail();
-            return $this->repository->update($data, $id);
-        } catch(ModelNotFoundException $e){
+        } catch(QueryException $e){
             return[
                 'error' => true,
                 'message' => $e->getMessage()
             ];
-        } catch(ValidatorException $e){
-            return[
-                'error' => true,
-                'message' => $e->getMessageBag()
-            ];
         }
     }
 
-    public function delete($id){
+    public function delete($id, $MemberId){
         try{
-            $this->repository->delete($id);
+            $member = $this->repository->findWhere(['project_id' => $id, 'user_id' => $MemberId])->first();
+            $this->repository->delete($member->id);
             return[
                 'error' => false,
                 'message' => 'Deletado com sucesso'
@@ -73,13 +62,18 @@ class ProjectMemberService
         }
     }
 
-    public function find($id){
+    public function find($id, $MemberId){
         try{
-            return $this->repository->find($id);
+            $member = $this->repository->findWhere(['project_id' => $id, 'user_id' => $MemberId])->first();
+            $this->repository->find($member->id);
+            return[
+                'error' => false,
+                'message' => 'É um membro'
+            ];
         }catch(\Exception $e){
             return[
                 'error' => true,
-                'message' => $e->getMessage()
+                'message' => 'Não é um membro'
             ];
         }
     }

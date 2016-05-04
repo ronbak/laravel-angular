@@ -40,7 +40,7 @@ class ProjectMemberController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function addMember(Request $request)
     {
         return $this->service->create($request->all());
     }
@@ -51,33 +51,10 @@ class ProjectMemberController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id, $MemberId)
+    public function isMember($id, $MemberId)
     {
         //return $this->service->find($id);
-        return $this->repository->findWhere(['project_id' => $id, 'id' => $MemberId]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id, $MemberId)
-    {
-        return $this->service->update($request->all(), $MemberId);
+        return $this->service->find($id, $MemberId);
     }
 
     /**
@@ -86,8 +63,8 @@ class ProjectMemberController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id, $MemberId)
+    public function removeMember($id, $MemberId)
     {
-        return $this->service->delete($MemberId);
+        return $this->service->delete($id, $MemberId);
     }
 }

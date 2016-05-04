@@ -2,11 +2,10 @@
 
 namespace LaravelAngular\Repositories;
 
+use LaravelAngular\Entities\ProjectMember;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use LaravelAngular\Repositories\ProjectMemberRepository;
-use LaravelAngular\Entities\ProjectMember;
-use LaravelAngular\Validators\ProjectMemberValidator;;
+
 
 /**
  * Class ProjectMemberRepositoryEloquent
@@ -24,7 +23,6 @@ class ProjectMemberRepositoryEloquent extends BaseRepository implements ProjectM
         return ProjectMember::class;
     }
 
-    
 
     /**
      * Boot up the repository, pushing criteria

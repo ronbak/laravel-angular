@@ -15,9 +15,11 @@ class ProjectMember extends Model implements Transformable
         'user_id'
     ];
 
+    public $timestamps = false;
+
     public function project()
     {
-        return $this->belongsTo(Project::class);
+        return $this->belongsToMany(Project::class);
     }
 
     public function user()
