@@ -64,6 +64,6 @@ $factory->define(LaravelAngular\Entities\ProjectTask::class, function (Faker\Gen
 $factory->define(LaravelAngular\Entities\ProjectMember::class, function (Faker\Generator $faker) {
     return [
         'project_id' => rand(1,10),
-        'user_id' => rand(1,2),
+        'member_id' => rand(1,2),
     ];
 });

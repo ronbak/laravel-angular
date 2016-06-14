@@ -11,7 +11,7 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(\LaravelAngular\Entities\User::class, 2)->create([
+        factory(\LaravelAngular\Entities\User::class, 1)->create([
             'name' => 'Raylan',
             'email' => 'raylan@raylansoares.com',
             'password' => bcrypt(123456),
