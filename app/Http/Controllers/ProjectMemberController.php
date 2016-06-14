@@ -40,7 +40,7 @@ class ProjectMemberController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function addMember(Request $request)
+    public function store(Request $request)
     {
         return $this->service->create($request->all());
     }
@@ -51,7 +51,7 @@ class ProjectMemberController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function isMember($id, $MemberId)
+    public function show($id, $MemberId)
     {
         //return $this->service->find($id);
         return $this->service->find($id, $MemberId);
@@ -63,7 +63,7 @@ class ProjectMemberController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function removeMember($id, $MemberId)
+    public function destroy($id, $MemberId)
     {
         return $this->service->delete($id, $MemberId);
     }

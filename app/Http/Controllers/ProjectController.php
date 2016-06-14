@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use LaravelAngular\Repositories\ProjectRepository;
 use LaravelAngular\Services\ProjectService;
+use LucaDegasperi\OAuth2Server\Facades\Authorizer;
 
 class ProjectController extends Controller
 {
@@ -30,8 +31,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        //return $this->repository->all();
-        return $this->repository->with(['owner', 'client', 'notes', 'tasks', 'members'])->all();
+        return $this->repository->with(['owner', 'client', 'notes', 'tasks', 'members'])->findWhere(['owner_id' => Authorizer::getResourceOwnerId()]);
     }
 
     /**
@@ -53,7 +53,9 @@ class ProjectController extends Controller
      */
     public function show($id)
     {
-        //return $this->service->find($id);
+        if($this->CheckProjectOwner($id) == false){
+            return ['error' => 'Access forbidden'];
+        }
         return $this->repository->with(['owner', 'client', 'notes', 'tasks', 'members'])->find($id);
     }
 
@@ -77,6 +79,9 @@ class ProjectController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if($this->CheckProjectOwner($id) == false){
+            return ['error' => 'Access forbidden'];
+        }
         return $this->service->update($request->all(), $id);
     }
 
@@ -88,6 +93,20 @@ class ProjectController extends Controller
      */
     public function destroy($id)
     {
+        if($this->CheckProjectOwner($id) == false){
+            return ['error' => 'Access forbidden'];
+        }
         return $this->service->delete($id);
+    }
+
+    /**
+     * @param $projectId
+     * @return array
+     */
+    private function CheckProjectOwner($projectId)
+    {
+        $userId = Authorizer::getResourceOwnerId();
+
+        return $this->repository->isOwner($projectId, $userId);
     }
 }
