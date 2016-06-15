@@ -33,6 +33,8 @@ Route::group(['middleware' => 'oauth'], function(){
     //Project Group
     Route::group(['prefix' => 'project'], function(){
 
+        Route::post('{id}/file', 'ProjectFileController@store');
+
         //ProjectNote
         Route::resource('{id}/note', 'ProjectNoteController', ['except' => ['create', 'edit']]);
 

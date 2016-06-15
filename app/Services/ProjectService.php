@@ -8,6 +8,8 @@
 
 namespace LaravelAngular\Services;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use LaravelAngular\Repositories\ProjectMemberRepository;
 use LaravelAngular\Repositories\ProjectRepository;
 use LaravelAngular\Validators\ProjectMemberValidator;
@@ -84,6 +86,14 @@ class ProjectService
                 'message' => $e->getMessage()
             ];
         }
+    }
+
+    public function createFile(array $data)
+    {
+        $project = $this->repository->skipPresenter()->find($data['project_id']);
+        $projectFile = $project->files()->create($data);
+
+        Storage::put($projectFile->id.'.'.$data['extension'], File::get($data['file']));
     }
 
 }

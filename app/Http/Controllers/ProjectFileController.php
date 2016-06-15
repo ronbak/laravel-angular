@@ -4,11 +4,13 @@ namespace LaravelAngular\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use LaravelAngular\Repositories\ProjectRepository;
 use LaravelAngular\Services\ProjectService;
 use LucaDegasperi\OAuth2Server\Facades\Authorizer;
 
-class ProjectController extends Controller
+class ProjectFileController extends Controller
 {
     /**
      * @var ProjectRepository
@@ -42,7 +44,16 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->service->create($request->all());
+        $file = $request->file('file');
+        $extension = $file->getClientOriginalExtension();
+
+        $data['file'] = $file;
+        $data['extension'] = $extension;
+        $data['name'] = $request->name;
+        $data['description'] = $request->description;
+        $data['project_id'] = $request->project_id;
+
+        $this->service->createFile($data);
     }
 
     /**
@@ -53,10 +64,21 @@ class ProjectController extends Controller
      */
     public function show($id)
     {
-        if($this->CheckProjectPermission($id) == false){
+        if($this->CheckProjectPermisions($id) == false){
             return ['error' => 'Access forbidden'];
         }
         return $this->repository->find($id);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
     }
 
     /**
@@ -68,7 +90,7 @@ class ProjectController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if($this->CheckProjectPermission($id) == false){
+        if($this->CheckProjectOwner($id) == false){
             return ['error' => 'Access forbidden'];
         }
         return $this->service->update($request->all(), $id);
@@ -89,8 +111,6 @@ class ProjectController extends Controller
     }
 
     /**
-     * Check project owner
-     *
      * @param $projectId
      * @return array
      */
@@ -102,8 +122,6 @@ class ProjectController extends Controller
     }
 
     /**
-     * Check project member
-     *
      * @param $projectId
      * @return mixed
      */
@@ -114,13 +132,8 @@ class ProjectController extends Controller
         return $this->repository->hasMember($projectId, $userId);
     }
 
-    /**
-     * Check project owner or member
-     *
-     * @param $projectId
-     * @return bool
-     */
-    private function CheckProjectPermission($projectId){
+
+    private function CheckProjectPermisions($projectId){
         if($this->CheckProjectOwner($projectId) or $this->CheckProjectMember($projectId)){
             return true;
         }
