@@ -2,11 +2,10 @@
 
 namespace LaravelAngular\Repositories;
 
+use LaravelAngular\Presenters\ProjectNotePresenter;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use LaravelAngular\Repositories\ProjectNoteRepository;
 use LaravelAngular\Entities\ProjectNote;
-use LaravelAngular\Validators\ProjectNoteValidator;;
 
 /**
  * Class ProjectNoteRepositoryEloquent
@@ -24,13 +23,16 @@ class ProjectNoteRepositoryEloquent extends BaseRepository implements ProjectNot
         return ProjectNote::class;
     }
 
-    
-
     /**
      * Boot up the repository, pushing criteria
      */
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
+    }
+
+    public function presenter()
+    {
+        return ProjectNotePresenter::class;
     }
 }

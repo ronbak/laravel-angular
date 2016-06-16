@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProjectMembersTable extends Migration
+class CreateTableProjectFiles extends Migration
 {
     /**
      * Run the migrations.
@@ -12,17 +12,15 @@ class CreateProjectMembersTable extends Migration
      */
     public function up()
     {
-        Schema::create('project_members', function (Blueprint $table) {
+        Schema::create('project_files', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('project_id')->unsigned();
-            $table->integer('member_id')->unsigned();
+            $table->string('name');
+            $table->text('description');
+            $table->string('extension');
+            $table->timestamps();
 
-            //Create a Unique Constraint
-            $table->unique(['project_id', 'member_id'], 'project_member');
-
-            //Create Foreign Keys
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
-            $table->foreign('member_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -33,6 +31,6 @@ class CreateProjectMembersTable extends Migration
      */
     public function down()
     {
-        Schema::drop('project_members');
+        Schema::drop('project_files');
     }
 }

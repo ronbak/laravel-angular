@@ -26,15 +26,6 @@ class ProjectFileController extends Controller
         $this->repository = $repository;
         $this->service = $service;
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        return $this->repository->findWhere(['owner_id' => Authorizer::getResourceOwnerId()]);
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -44,6 +35,10 @@ class ProjectFileController extends Controller
      */
     public function store(Request $request)
     {
+        if($this->CheckProjectPermission($request->project_id) == false){
+            return ['error' => 'Access forbidden'];
+        }
+        
         $file = $request->file('file');
         $extension = $file->getClientOriginalExtension();
 
@@ -57,57 +52,19 @@ class ProjectFileController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Delete resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $projectId
+     * @param $fileId
+     * @return array
      */
-    public function show($id)
+    public function destroy($projectId, $fileId)
     {
-        if($this->CheckProjectPermisions($id) == false){
+        if($this->CheckProjectOwner($projectId) == false){
             return ['error' => 'Access forbidden'];
         }
-        return $this->repository->find($id);
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        if($this->CheckProjectOwner($id) == false){
-            return ['error' => 'Access forbidden'];
-        }
-        return $this->service->update($request->all(), $id);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        if($this->CheckProjectOwner($id) == false){
-            return ['error' => 'Access forbidden'];
-        }
-        return $this->service->delete($id);
+        $this->service->deleteFile($projectId, $fileId);
     }
 
     /**
@@ -133,7 +90,7 @@ class ProjectFileController extends Controller
     }
 
 
-    private function CheckProjectPermisions($projectId){
+    private function CheckProjectPermission($projectId){
         if($this->CheckProjectOwner($projectId) or $this->CheckProjectMember($projectId)){
             return true;
         }

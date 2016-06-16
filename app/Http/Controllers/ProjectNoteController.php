@@ -5,7 +5,9 @@ namespace LaravelAngular\Http\Controllers;
 use Illuminate\Http\Request;
 
 use LaravelAngular\Repositories\ProjectNoteRepository;
+use LaravelAngular\Repositories\ProjectRepository;
 use LaravelAngular\Services\ProjectNoteService;
+use LucaDegasperi\OAuth2Server\Facades\Authorizer;
 
 class ProjectNoteController extends Controller
 {
@@ -18,10 +20,15 @@ class ProjectNoteController extends Controller
      * @var ProjectNoteService
      */
     private $service;
+    /**
+     * @var ProjectRepository
+     */
+    private $projectRepository;
 
-    public function __construct(ProjectNoteRepository $repository, ProjectNoteService $service){
+    public function __construct(ProjectNoteRepository $repository, ProjectNoteService $service, ProjectRepository $projectRepository){
         $this->repository = $repository;
         $this->service = $service;
+        $this->projectRepository = $projectRepository;
     }
     /**
      * Display a listing of the resource.
@@ -30,7 +37,9 @@ class ProjectNoteController extends Controller
      */
     public function index($id)
     {
-        //return $this->repository->all();
+        if($this->CheckProjectPermission($id) == false){
+            return ['error' => 'Access forbidden'];
+        }
         return $this->repository->findWhere(['project_id' => $id]);
     }
 
@@ -42,6 +51,9 @@ class ProjectNoteController extends Controller
      */
     public function store(Request $request)
     {
+        if($this->CheckProjectPermission($request->project_id) == false){
+            return ['error' => 'Access forbidden'];
+        }
         return $this->service->create($request->all());
     }
 
@@ -53,19 +65,10 @@ class ProjectNoteController extends Controller
      */
     public function show($id, $noteId)
     {
-        //return $this->service->find($id);
-        return $this->repository->findWhere(['project_id' => $id, 'id' => $noteId]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        if($this->CheckProjectPermission($id) == false){
+            return ['error' => 'Access forbidden'];
+        }
+        return $this->service->find($noteId);
     }
 
     /**
@@ -77,6 +80,9 @@ class ProjectNoteController extends Controller
      */
     public function update(Request $request, $id, $noteId)
     {
+        if($this->CheckProjectPermission($id) == false){
+            return ['error' => 'Access forbidden'];
+        }
         return $this->service->update($request->all(), $noteId);
     }
 
@@ -88,6 +94,48 @@ class ProjectNoteController extends Controller
      */
     public function destroy($id, $noteId)
     {
+        if($this->CheckProjectOwner($id) == false){
+            return ['error' => 'Access forbidden'];
+        }
         return $this->service->delete($noteId);
+    }
+
+    /**
+     * Check project owner
+     *
+     * @param $projectId
+     * @return array
+     */
+    private function CheckProjectOwner($projectId)
+    {
+        $userId = Authorizer::getResourceOwnerId();
+
+        return $this->projectRepository->isOwner($projectId, $userId);
+    }
+
+    /**
+     * Check project member
+     *
+     * @param $projectId
+     * @return mixed
+     */
+    private function CheckProjectMember($projectId)
+    {
+        $userId = Authorizer::getResourceOwnerId();
+
+        return $this->projectRepository->hasMember($projectId, $userId);
+    }
+
+    /**
+     * Check project owner or member
+     *
+     * @param $projectId
+     * @return bool
+     */
+    private function CheckProjectPermission($projectId){
+        if($this->CheckProjectOwner($projectId) or $this->CheckProjectMember($projectId)){
+            return true;
+        }
+        return false;
     }
 }

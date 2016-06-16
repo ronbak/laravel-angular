@@ -10,9 +10,8 @@ namespace LaravelAngular\Services;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use LaravelAngular\Repositories\ProjectMemberRepository;
+use LaravelAngular\Repositories\ProjectFileRepository;
 use LaravelAngular\Repositories\ProjectRepository;
-use LaravelAngular\Validators\ProjectMemberValidator;
 use LaravelAngular\Validators\ProjectValidator;
 use Prettus\Validator\Exceptions\ValidatorException;
 
@@ -31,6 +30,18 @@ class ProjectService
     public function __construct(ProjectRepository $repository, ProjectValidator $validator){
         $this->repository = $repository;
         $this->validator = $validator;
+    }
+
+    public function index($userId)
+    {
+        $data = $this->repository->scopeQuery(function ($query) use ($userId) {
+            return $query->select('projects.*')
+                ->leftJoin('project_members', 'project_members.project_id', '=', 'projects.id')
+                ->where('projects.owner_id', '=', $userId)
+                ->orWhere('project_members.member_id', '=', $userId)
+                ->orderBy('projects.id');
+        })->all();
+        return $data;
     }
 
     public function create(array $data){
@@ -90,10 +101,45 @@ class ProjectService
 
     public function createFile(array $data)
     {
-        $project = $this->repository->skipPresenter()->find($data['project_id']);
-        $projectFile = $project->files()->create($data);
+        try{
+            $project = $this->repository->skipPresenter()->find($data['project_id']);
+            $projectFile = $project->files()->create($data);
+            Storage::put($projectFile->id.'.'.$data['extension'], File::get($data['file']));
+            return[
+                'error' => false,
+                'message' => 'Arquivo upado com sucesso'
+            ];
+        }catch(\Exception $e){
+            return[
+                'error' => true,
+                'message' => $e->getMessage()
+            ];
+        }
 
-        Storage::put($projectFile->id.'.'.$data['extension'], File::get($data['file']));
+    }
+
+    public function deleteFile($projectId, $fileId)
+    {
+        try{
+            $project = $this->repository->skipPresenter()->find($projectId);
+            
+            $projectFile = $project->files()->find($fileId);
+
+            Storage::delete($projectFile->id.'.'.$projectFile->extension);
+
+            $projectFile->delete($fileId);
+
+            return[
+                'error' => false,
+                'message' => 'Arquivo deletado com sucesso'
+            ];
+        }catch(\Exception $e){
+            return[
+                'error' => true,
+                'message' => $e->getMessage()
+            ];
+        }
+
     }
 
 }

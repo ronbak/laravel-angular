@@ -31,7 +31,8 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        return $this->repository->findWhere(['owner_id' => Authorizer::getResourceOwnerId()]);
+        $userId = Authorizer::getResourceOwnerId();
+        return $this->service->index($userId);
     }
 
     /**
@@ -56,7 +57,7 @@ class ProjectController extends Controller
         if($this->CheckProjectPermission($id) == false){
             return ['error' => 'Access forbidden'];
         }
-        return $this->repository->find($id);
+        return $this->service->find($id);
     }
 
     /**

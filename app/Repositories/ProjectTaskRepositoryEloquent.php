@@ -2,11 +2,10 @@
 
 namespace LaravelAngular\Repositories;
 
+use LaravelAngular\Presenters\ProjectTaskPresenter;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use LaravelAngular\Repositories\ProjectTaskRepository;
 use LaravelAngular\Entities\ProjectTask;
-use LaravelAngular\Validators\ProjectTaskValidator;;
 
 /**
  * Class ProjectTaskRepositoryEloquent
@@ -24,13 +23,16 @@ class ProjectTaskRepositoryEloquent extends BaseRepository implements ProjectTas
         return ProjectTask::class;
     }
 
-    
-
     /**
      * Boot up the repository, pushing criteria
      */
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
+    }
+
+    public function presenter()
+    {
+        return ProjectTaskPresenter::class;
     }
 }
