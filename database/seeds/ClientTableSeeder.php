@@ -11,6 +11,6 @@ class ClientTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(\LaravelAngular\Entities\Client::class, 5)->create();
+        factory(\LaravelAngular\Entities\Client::class, 15)->create();
     }
 }

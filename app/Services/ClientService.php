@@ -76,7 +76,7 @@ class ClientService
 
     public function find($id){
         try{
-            return $this->repository->find($id);
+            return $this->repository->skipPresenter()->find($id);
         }catch(\Exception $e){
             return[
                 'error' => true,
