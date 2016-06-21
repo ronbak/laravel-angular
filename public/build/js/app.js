@@ -4,6 +4,7 @@
 var app = angular.module('app', ['ngRoute', 'angular-oauth2', 'app.controllers', 'app.services']);
 
 angular.module('app.controllers', ['ngMessages', 'angular-oauth2']);
+
 angular.module('app.services', ['ngResource']);
 
 app.provider('appConfig', function () {
@@ -18,9 +19,34 @@ app.provider('appConfig', function () {
     }
 });
 
-app.config(['$routeProvider', 'OAuthProvider', 'OAuthTokenProvider', 'appConfigProvider',
-    function ($routeProvider, OAuthProvider, OAuthTokenProvider, appConfigProvider) {
+app.config(['$routeProvider', '$httpProvider', 'OAuthProvider', 'OAuthTokenProvider', 'appConfigProvider',
+
+    function ($routeProvider, $httpProvider, OAuthProvider, OAuthTokenProvider, appConfigProvider) {
+
+        $httpProvider.defaults.transformResponse = function (data, headers) {
+
+            var headersGetter = headers();
+
+            if(headersGetter['content-type'] == 'application/json' || headersGetter['content-type'] == 'text/json'){
+
+                var dataJason = JSON.parse(data);
+
+                if(dataJason.hasOwnProperty('data')){
+
+                    dataJason = dataJason.data;
+
+                }
+
+                return dataJason;
+
+            }
+
+            return data;
+
+        };
+
         $routeProvider
+
             .when('/login', {
                 templateUrl: 'build/views/login.html',
                 controller: 'LoginController'
@@ -37,13 +63,45 @@ app.config(['$routeProvider', 'OAuthProvider', 'OAuthTokenProvider', 'appConfigP
                 templateUrl: 'build/views/client/new.html',
                 controller: 'ClientNewController'
             })
-            .when('/client/:id/edit', {
+
+            .when('/client/:idClient/view', {
+                templateUrl: 'build/views/client/view.html',
+                controller: 'ClientViewController'
+            })
+
+            .when('/client/:idClient/edit', {
                 templateUrl: 'build/views/client/edit.html',
                 controller: 'ClientEditController'
             })
-            .when('/client/:id/remove', {
+
+            .when('/client/:idClient/remove', {
                 templateUrl: 'build/views/client/remove.html',
                 controller: 'ClientRemoveController'
+            })
+
+            .when('/project/:idProject/note', {
+                templateUrl: 'build/views/project-note/list.html',
+                controller: 'ProjectNoteListController'
+            })
+
+            .when('/project/:idProject/note/new', {
+                templateUrl: 'build/views/project-note/new.html',
+                controller: 'ProjectNoteNewController'
+            })
+
+            .when('/project/:idProject/note/:idNote/view', {
+                templateUrl: 'build/views/project-note/view.html',
+                controller: 'ProjectNoteViewController'
+            })
+
+            .when('/project/:idProject/note/:idNote/edit', {
+                templateUrl: 'build/views/project-note/edit.html',
+                controller: 'ProjectNoteEditController'
+            })
+
+            .when('/project/:idProject/note/:idNote/remove', {
+                templateUrl: 'build/views/project-note/remove.html',
+                controller: 'ProjectNoteRemoveController'
             });
 
         OAuthProvider.configure({
@@ -62,18 +120,19 @@ app.config(['$routeProvider', 'OAuthProvider', 'OAuthTokenProvider', 'appConfigP
     }]);
 
 app.run(['$rootScope', '$window', 'OAuth', function ($rootScope, $window, OAuth) {
+
     $rootScope.$on('oauth:error', function (event, rejection) {
-        // Ignore `invalid_grant` error - should be catched on `LoginController`.
+
         if ('invalid_grant' === rejection.data.error) {
             return;
         }
 
-        // Refresh token when a `invalid_token` error occurs.
         if ('invalid_token' === rejection.data.error) {
             return OAuth.getRefreshToken();
         }
 
-        // Redirect to `/login` with the `error_reason`.
         return $window.location.href = '/login?error_reason=' + rejection.data.error;
+
     });
+
 }]);

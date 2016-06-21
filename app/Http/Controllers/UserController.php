@@ -4,25 +4,27 @@ namespace LaravelAngular\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use LaravelAngular\Repositories\ClientRepository;
-use LaravelAngular\Services\ClientService;
+use LaravelAngular\Http\Requests;
+use LaravelAngular\Entities\User;
+use LaravelAngular\Http\Controllers\Controller;
+use LaravelAngular\Repositories\UserRepository;
+use LucaDegasperi\OAuth2Server\Facades\Authorizer;
 
-class ClientController extends Controller
+class UserController extends Controller
 {
-    /**
-     * @var ClientRepository
-     */
+
     private $repository;
 
-    /**
-     * @var ClientService
-     */
-    private $service;
-
-    public function __construct(ClientRepository $repository, ClientService $service){
+    public function __construct(UserRepository $repository)
+    {
         $this->repository = $repository;
-        $this->service = $service;
     }
+
+    public function authenticated(){
+        $userId = Authorizer::getResourceOwnerId();
+        return $this->repository->find($userId);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -30,7 +32,17 @@ class ClientController extends Controller
      */
     public function index()
     {
-        return $this->repository->all();
+        //
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
     }
 
     /**
@@ -41,7 +53,7 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->service->create($request->all());
+        //
     }
 
     /**
@@ -52,7 +64,7 @@ class ClientController extends Controller
      */
     public function show($id)
     {
-        return $this->service->find($id);
+        //
     }
 
     /**
@@ -75,7 +87,7 @@ class ClientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return $this->service->update($request->all(), $id);
+        //
     }
 
     /**
@@ -86,6 +98,6 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
-        return $this->service->delete($id);
+        //
     }
 }
