@@ -5,8 +5,6 @@ namespace LaravelAngular\Http\Controllers;
 use Illuminate\Http\Request;
 
 use LaravelAngular\Http\Requests;
-use LaravelAngular\Entities\User;
-use LaravelAngular\Http\Controllers\Controller;
 use LaravelAngular\Repositories\UserRepository;
 use LucaDegasperi\OAuth2Server\Facades\Authorizer;
 

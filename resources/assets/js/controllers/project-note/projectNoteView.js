@@ -3,10 +3,10 @@
  */
 angular.module('app.controllers')
     
-    .controller('ProjectNoteViewController', ['$scope', 'Client', '$routeParams',
+    .controller('ProjectNoteViewController', ['$scope', 'ProjectNote', '$routeParams',
         
-        function ($scope, Client, $routeParams) {
+        function ($scope, ProjectNote, $routeParams) {
             
-            $scope.projectNote = new Client.get({idClient: $routeParams.idClient});
+            $scope.projectNote = new ProjectNote.get({idProject: $routeParams.idProject, idNote: $routeParams.idNote});
             
         }]);
