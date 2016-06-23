@@ -7,6 +7,6 @@ angular.module('app.controllers')
         
         function ($scope, Client, $routeParams) {
             
-            $scope.projectNote = new Client.get({idClient: $routeParams.idClient});
+            $scope.client = new Client.get({idClient: $routeParams.idClient});
             
         }]);

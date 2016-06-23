@@ -7,11 +7,11 @@ angular.module('app.controllers')
 
         function ($scope, Client, $location, $routeParams) {
 
-            $scope.projectNote = Client.get({idClient: $routeParams.idClient});
+            $scope.client = Client.get({idClient: $routeParams.idClient});
 
             $scope.save = function () {
-                if ($scope.formClientNew.$valid) {
-                    Client.update({idClient: $scope.projectNote.id}, $scope.projectNote, function () {
+                if ($scope.formClientEdit.$valid) {
+                    Client.update({idClient: $scope.client.id}, $scope.client, function () {
                         $location.path('/client')
                     });
                 }

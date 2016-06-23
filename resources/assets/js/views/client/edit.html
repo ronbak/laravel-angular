@@ -5,54 +5,54 @@
                 <div class="panel-heading">Edição de cliente</div>
                 <div class="panel-body">
 
-                    <form class="form-horizontal" name="formClientNew" role="form" method="PUT" ng-submit="save()">
+                    <form class="form-horizontal" name="formClientEdit" role="form" method="PUT" ng-submit="save()">
 
-                        <div class="form-group" ng-class="{'has-error': !formClientNew.name.$valid && formClientNew.name.$touched}">
+                        <div class="form-group" ng-class="{'has-error': !formClientEdit.name.$valid && formClientEdit.name.$touched}">
                             <label class="col-md-4 control-label">Name</label>
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="name" ng-model="client.name" required>
-                                <div ng-messages="formClientNew.name.$error" class="help-block" ng-show="formClientNew.name.$touched">
+                                <div ng-messages="formClientEdit.name.$error" class="help-block" ng-show="formClientEdit.name.$touched">
                                     <div ng-message="required">Preencha este campo obrigatório</div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="form-group" ng-class="{'has-error': !formClientNew.responsible.$valid && formClientNew.responsible.$touched}">
+                        <div class="form-group" ng-class="{'has-error': !formClientEdit.responsible.$valid && formClientEdit.responsible.$touched}">
                             <label class="col-md-4 control-label">Responsible</label>
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="responsible" ng-model="client.responsible" required>
-                                <div ng-messages="formClientNew.responsible.$error" class="help-block" ng-show="formClientNew.responsible.$touched">
+                                <div ng-messages="formClientEdit.responsible.$error" class="help-block" ng-show="formClientEdit.responsible.$touched">
                                     <div ng-message="required">Preencha este campo obrigatório</div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="form-group" ng-class="{'has-error': !formClientNew.email.$valid && formClientNew.email.$touched}">
+                        <div class="form-group" ng-class="{'has-error': !formClientEdit.email.$valid && formClientEdit.email.$touched}">
                             <label class="col-md-4 control-label">E-mail</label>
                             <div class="col-md-6">
                                 <input type="email" class="form-control" name="email" ng-model="client.email" required>
-                                <div ng-messages="formClientNew.email.$error" class="help-block" ng-show="formClientNew.email.$touched">
+                                <div ng-messages="formClientEdit.email.$error" class="help-block" ng-show="formClientEdit.email.$touched">
                                     <div ng-message="required">Preencha este campo obrigatório</div>
                                     <div ng-message="email">Digite um e-mail válido</div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="form-group" ng-class="{'has-error': !formClientNew.phone.$valid && formClientNew.phone.$touched}">
+                        <div class="form-group" ng-class="{'has-error': !formClientEdit.phone.$valid && formClientEdit.phone.$touched}">
                             <label class="col-md-4 control-label">Phone</label>
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="phone" ng-model="client.phone" required>
-                                <div ng-messages="formClientNew.phone.$error" class="help-block" ng-show="formClientNew.phone.$touched">
+                                <div ng-messages="formClientEdit.phone.$error" class="help-block" ng-show="formClientEdit.phone.$touched">
                                     <div ng-message="required">Preencha este campo obrigatório</div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="form-group" ng-class="{'has-error': !formClientNew.address.$valid && formClientNew.address.$touched}">
+                        <div class="form-group" ng-class="{'has-error': !formClientEdit.address.$valid && formClientEdit.address.$touched}">
                             <label class="col-md-4 control-label">Address</label>
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="address" ng-model="client.address" required>
-                                <div ng-messages="formClientNew.address.$error" class="help-block" ng-show="formClientNew.address.$touched">
+                                <div ng-messages="formClientEdit.address.$error" class="help-block" ng-show="formClientEdit.address.$touched">
                                     <div ng-message="required">Preencha este campo obrigatório</div>
                                 </div>
                             </div>

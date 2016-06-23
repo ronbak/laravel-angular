@@ -7,10 +7,10 @@ angular.module('app.controllers')
         
         function ($scope, Client, $location, $routeParams) {
             
-            $scope.projectNote = new Client.get({idClient: $routeParams.idClient});
+            $scope.client = Client.get({idClient: $routeParams.idClient});
             
             $scope.remove = function () {
-                $scope.projectNote.$delete().then(function () {
+                $scope.client.$delete({idClient: $routeParams.idClient}).then(function () {
                     $location.path('/client')
                 })
             }

@@ -5,11 +5,11 @@ angular.module('app.controllers')
     
     .controller('ClientNewController',['$scope', 'Client', '$location', function ($scope, Client, $location) {
         
-        $scope.projectNote = new Client();
+        $scope.client = new Client();
         
         $scope.save = function () {
             if($scope.formClientNew.$valid){
-                $scope.projectNote.$save().then(function () {
+                $scope.client.$save().then(function () {
                     $location.path('/client')
                 })
             }

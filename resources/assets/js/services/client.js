@@ -5,11 +5,11 @@ angular.module('app.services')
     
     .service('Client', ['$resource', 'appConfig', function ($resource, appConfig) {
         
-        return $resource(appConfig.baseUrl + '/client/:idClient', {idClient: '@id'},{
+        return $resource(appConfig.baseUrl + '/client/:idClient', {idClient: '@idClient'},{
             
             update: {
                 method: 'PUT'
-            }
+            },
 
         });
         
