@@ -1,15 +1,45 @@
 /**
  * Created by Raylan on 16/06/2016.
  */
-var app = angular.module('app', ['ngRoute', 'angular-oauth2', 'app.controllers', 'app.services']);
+var app = angular.module('app', ['ngRoute', 'angular-oauth2', 'app.controllers', 'app.services', 'app.filters']);
 
 angular.module('app.controllers', ['ngMessages', 'angular-oauth2']);
+
+angular.module('app.filters', []);
 
 angular.module('app.services', ['ngResource']);
 
 app.provider('appConfig', function () {
     var config = {
-        baseUrl: 'http://localhost:8080'
+        baseUrl: 'http://localhost:8080',
+        project: {
+            status: [
+                {value: 1, label: 'Não Iniciado'},
+                {value: 2, label: 'Em Andamento'},
+                {value: 3, label: 'Concluído'}
+            ]
+        },
+        utils: {
+            transformResponse: function (data, headers) {
+                var headersGetter = headers();
+
+                if (headersGetter['content-type'] == 'application/json' || headersGetter['content-type'] == 'text/json') {
+
+                    var dataJason = JSON.parse(data);
+
+                    if (dataJason.hasOwnProperty('data')) {
+
+                        dataJason = dataJason.data;
+
+                    }
+
+                    return dataJason;
+
+                }
+
+                return data;
+            }
+        }
     };
     return {
         config: config,
@@ -23,27 +53,11 @@ app.config(['$routeProvider', '$httpProvider', 'OAuthProvider', 'OAuthTokenProvi
 
     function ($routeProvider, $httpProvider, OAuthProvider, OAuthTokenProvider, appConfigProvider) {
 
-        $httpProvider.defaults.transformResponse = function (data, headers) {
+        $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
 
-            var headersGetter = headers();
+        $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
 
-            if(headersGetter['content-type'] == 'application/json' || headersGetter['content-type'] == 'text/json'){
-
-                var dataJason = JSON.parse(data);
-
-                if(dataJason.hasOwnProperty('data')){
-
-                    dataJason = dataJason.data;
-
-                }
-
-                return dataJason;
-
-            }
-
-            return data;
-
-        };
+        $httpProvider.defaults.transformResponse = appConfigProvider.config.utils.transformResponse;
 
         $routeProvider
 
@@ -77,6 +91,31 @@ app.config(['$routeProvider', '$httpProvider', 'OAuthProvider', 'OAuthTokenProvi
             .when('/client/:idClient/remove', {
                 templateUrl: 'build/views/client/remove.html',
                 controller: 'ClientRemoveController'
+            })
+
+            .when('/project', {
+                templateUrl: 'build/views/project/list.html',
+                controller: 'ProjectListController'
+            })
+
+            .when('/project/new', {
+                templateUrl: 'build/views/project/new.html',
+                controller: 'ProjectNewController'
+            })
+
+            .when('/project/:idProject/view', {
+                templateUrl: 'build/views/project/view.html',
+                controller: 'ProjectViewController'
+            })
+
+            .when('/project/:idProject/edit', {
+                templateUrl: 'build/views/project/edit.html',
+                controller: 'ProjectEditController'
+            })
+
+            .when('/project/:idProject/remove', {
+                templateUrl: 'build/views/project/remove.html',
+                controller: 'ProjectRemoveController'
             })
 
             .when('/project/:idProject/note', {

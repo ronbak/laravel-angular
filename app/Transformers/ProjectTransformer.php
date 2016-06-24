@@ -8,13 +8,14 @@
 
 namespace LaravelAngular\Transformers;
 
+use LaravelAngular\Entities\Client;
 use LaravelAngular\Entities\Project;
 use League\Fractal\TransformerAbstract;
 
 class ProjectTransformer extends TransformerAbstract
 {
 
-    protected $defaultIncludes = ['members', 'notes', 'tasks'];
+    protected $defaultIncludes = ['members', 'notes', 'tasks', 'client'];
 
     public function transform(Project $project)
     {
@@ -45,6 +46,11 @@ class ProjectTransformer extends TransformerAbstract
     public function includeTasks(Project $project)
     {
         return $this->collection($project->tasks, new ProjectTaskTransformer());
+    }
+
+    public function includeClient(Project $project)
+    {
+        return $this->item($project->client, new ClientTransformer());
     }
 
 }

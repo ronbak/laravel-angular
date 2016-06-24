@@ -1,0 +1,86 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-heading">Edição de projeto</div>
+                <div class="panel-body">
+
+                    <form class="form-horizontal" name="formProjectEdit" role="form" method="POST" ng-submit="save()">
+
+                        <div class="form-group" ng-class="{'has-error': !formProjectEdit.name.$valid && formProjectEdit.name.$touched}">
+                            <label class="col-md-4 control-label">Name</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" name="name" ng-model="project.name" required>
+                                <div ng-messages="formProjectEdit.name.$error" class="help-block" ng-show="formProjectEdit.name.$touched">
+                                    <div ng-message="required">Preencha este campo obrigatório</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-class="{'has-error': !formProjectEdit.description.$valid && formProjectEdit.description.$touched}">
+                            <label class="col-md-4 control-label">Description</label>
+                            <div class="col-md-6">
+                                <textarea class="form-control" name="description" ng-model="project.description" required></textarea>
+                                <div ng-messages="formProjectEdit.description.$error" class="help-block" ng-show="formProjectEdit.description.$touched">
+                                    <div ng-message="required">Preencha este campo obrigatório</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-class="{'has-error': !formProjectEdit.client_id.$valid && formProjectEdit.client_id.$touched}">
+                            <label class="col-md-4 control-label">Client</label>
+                            <div class="col-md-6">
+                                <select name="client_id" class="form-control" ng-options="o.id as o.name for o in clients" ng-model="project.client_id" required>
+                                    <option value=""></option>
+                                </select>
+                                <div ng-messages="formProjectEdit.client_id.$error" class="help-block" ng-show="formProjectEdit.client_id.$touched">
+                                    <div ng-message="required">Preencha este campo obrigatório</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-class="{'has-error': !formProjectEdit.due_date.$valid && formProjectEdit.due_date.$touched}">
+                            <label class="col-md-4 control-label">Due Date</label>
+                            <div class="col-md-6">
+                                <input type="date" class="form-control" name="due_date" ng-model="project.due_date" required>
+                                <div ng-messages="formProjectEdit.due_date.$error" class="help-block" ng-show="formProjectEdit.due_date.$touched">
+                                    <div ng-message="required">Preencha este campo obrigatório</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-class="{'has-error': !formProjectEdit.progress.$valid && formProjectEdit.progress.$touched}">
+                            <label class="col-md-4 control-label">Progress(%)</label>
+                            <div class="col-md-6">
+                                <input type="number" min="0" max="100" class="form-control" name="progress" ng-model="project.progress" required>
+                                <div ng-messages="formProjectEdit.progress.$error" class="help-block" ng-show="formProjectEdit.progress.$touched">
+                                    <div ng-message="required">Preencha este campo obrigatório</div>
+                                    <div ng-message="min">O valor mínimo aceitável é 0</div>
+                                    <div ng-message="max">O valor máximo aceitável é 100</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-class="{'has-error': !formProjectEdit.status.$valid && formProjectEdit.status.$touched}">
+                            <label class="col-md-4 control-label">Status</label>
+                            <div class="col-md-6">
+                                <select name="status" class="form-control" ng-options="o.value as o.label for o in status" ng-model="project.status" required>
+                                    <option value=""></option>
+                                </select>
+                                <div ng-messages="formProjectEdit.status.$error" class="help-block" ng-show="formProjectEdit.status.$touched">
+                                    <div ng-message="required">Preencha este campo obrigatório</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-6 col-md-offset-4">
+                                <button type="submit" class="btn btn-primary">Salvar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
