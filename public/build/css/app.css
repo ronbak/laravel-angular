@@ -361,7 +361,7 @@
   background: inherit;
   font-weight: normal;
   margin-bottom: 0;
-  /* Targetting Webkit browsers only. FF will show the dropdown arrow with so much padding. */ }
+  /* Targeting Webkit browsers only. FF will show the dropdown arrow with so much padding. */ }
   .select-styled:after {
     position: absolute;
     top: 5px;
